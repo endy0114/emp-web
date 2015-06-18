@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.endy.emp.sqlMapper.UserMapper">
+
+	<!-- 添加用户 -->
+	<insert id="addUser" parameterType="User">
+		insert into user(userName
+		<if test="aliasesName">,aliasesName</if>
+		,password,userType,userState) 
+		values(#{userName}<if test="aliasesName">,#{aliasesName}</if>
+		,#{password},#{userType},#{userState});
+	</insert>
+	
+	<!-- 用户 -->
+	<resultMap type="User" id="UserResultMap">
+		<id property="id" column="id"/>
+		<result property="userName" column="userName"/>
+		<result property="aliasesName" column="aliasesName"/>
+		<result property="password" column="password"/>
+		<result property="userType" column="userType"/>
+		<result property="userState" column="userState"/>
+	</resultMap>
+	
+	<!-- 根据用户ID查找用户 -->
+	<select id="loadUserById" parameterType="java.lang.Integer" resultMap="UserResultMap">
+		select id,userName,aliasesName,userType,userState from user where id=#{id}
+	</select>
+	
+	<!-- 根据用户名查找用户 -->
+	<select id="loadUserByName" parameterType="java.lang.String" resultMap="UserResultMap">
+		select id,userName,password,aliasesName,userType,userState from user where userName=#{userName}
+	</select>
+
+</mapper>
